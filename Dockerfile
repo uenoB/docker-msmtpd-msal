@@ -35,8 +35,8 @@ COPY --from=build /bin/sh /bin
 COPY --from=build /root/entrypoint.sh /
 VOLUME /etc/msmtp
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD [ \
-  "/entrypoint.sh", \
   "--interface=0.0.0.0", \
   "--log=/dev/stderr", \
   "--auth=user,/etc/msmtp/password" \
