@@ -15,5 +15,4 @@ docker pull ghcr.io/uenob/msmtpd-msal
 ## Usage
 
 Mount a volume containing the following to `/etc/msmtp`:
-- `password`: script that produces a password
 - `msmtprc`: configuration file for msmtp
