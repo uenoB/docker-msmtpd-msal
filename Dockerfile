@@ -18,21 +18,25 @@ COPY msal.tgz /root
 RUN mkdir msal && tar -xzf msal.tgz -C msal
 RUN cd msal && go build -tags simple
 
+COPY entrypoint.sh /root
+RUN chmod 755 entrypoint.sh
+
 FROM gcr.io/distroless/cc-debian12:nonroot
 COPY --from=build \
   /lib/x86_64-linux-gnu/libssl.so.3 \
   /lib/x86_64-linux-gnu/libcrypto.so.3 \
   /lib/x86_64-linux-gnu
-COPY --from=build /bin/sh /bin
 COPY --from=build \
   /root/msal/msal \
   /usr/bin/msmtp \
   /usr/bin/msmtpd \
   /usr/bin
+COPY --from=build /bin/sh /bin
+COPY --from=build /root/entrypoint.sh /
 VOLUME /etc/msmtp
 
 CMD [ \
-  "msmtpd", \
+  "/entrypoint.sh", \
   "--interface=0.0.0.0", \
   "--log=/dev/stderr", \
   "--auth=user,/etc/msmtp/password" \
