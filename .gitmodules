@@ -1,0 +1,3 @@
+[submodule "msal"]
+	path = msal
+	url = https://github.com/uenoB/msal.git
