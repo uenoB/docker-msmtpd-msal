@@ -13,7 +13,6 @@ RUN cd msmtp-$VERSION && \
               --disable-nls --with-tls=openssl && \
   make install
 
-ARG MSAL_COMMIT
 COPY msal.tgz /root
 RUN mkdir msal && tar -xzf msal.tgz -C msal
 RUN cd msal && go build -tags=simple -trimpath -ldflags="-s -w"
