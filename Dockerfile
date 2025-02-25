@@ -16,7 +16,7 @@ RUN cd msmtp-$VERSION && \
 ARG MSAL_COMMIT
 COPY msal.tgz /root
 RUN mkdir msal && tar -xzf msal.tgz -C msal
-RUN cd msal && go build -tags simple
+RUN cd msal && go build -tags=simple -trimpath -ldflags="-s -w"
 
 COPY entrypoint.sh /root
 RUN chmod 755 entrypoint.sh
