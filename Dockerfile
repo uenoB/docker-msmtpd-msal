@@ -31,4 +31,4 @@ COPY --from=build \
 VOLUME /etc/msmtp
 
 ENTRYPOINT ["tini", "--", "msmtpd"]
-CMD ["--interface=0.0.0.0", "--log=/dev/stderr"]
+CMD ["--interface=0.0.0.0", "--port=2525", "--log=/dev/stderr"]
