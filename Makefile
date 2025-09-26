@@ -3,8 +3,7 @@ VERSION=1.8.31
 SHA256=c262b11762d8582a3c6d6ca8d8b2cca2b1605497324ca27cc57fdc145a27119f
 DOCKER=docker
 
-msmtpd-msal-$(VERSION).tar: \
-    Dockerfile msmtp-$(VERSION).tar.xz msal.tgz entrypoint.sh
+msmtpd-msal-$(VERSION).tar: Dockerfile msmtp-$(VERSION).tar.xz msal.tgz
 	$(DOCKER) buildx build \
 	  --build-arg VERSION=$(VERSION) \
 	  --platform linux/amd64 -t $(NAME):$(VERSION) .

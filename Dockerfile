@@ -1,8 +1,8 @@
 FROM debian:12 AS build
 RUN apt-get update
-RUN apt-get install -y libc6-dev gcc make pkg-config xz-utils
-RUN apt-get install -y libssl-dev
+RUN apt-get install -y libc6-dev gcc make pkg-config xz-utils libssl-dev
 RUN apt-get install -y golang ca-certificates
+RUN apt-get install -y tini
 WORKDIR /root
 
 ARG VERSION
@@ -17,9 +17,6 @@ COPY msal.tgz /root
 RUN mkdir msal && tar -xzf msal.tgz -C msal
 RUN cd msal && go build -tags=simple -trimpath -ldflags="-s -w"
 
-COPY entrypoint.sh /root
-RUN chmod 755 entrypoint.sh
-
 FROM gcr.io/distroless/cc-debian12:nonroot
 COPY --from=build \
   /lib/x86_64-linux-gnu/libssl.so.3 \
@@ -29,10 +26,9 @@ COPY --from=build \
   /root/msal/msal \
   /usr/bin/msmtp \
   /usr/bin/msmtpd \
+  /usr/bin/tini \
   /usr/bin
-COPY --from=build /bin/sh /bin
-COPY --from=build /root/entrypoint.sh /
 VOLUME /etc/msmtp
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["tini", "--", "msmtpd"]
 CMD ["--interface=0.0.0.0", "--log=/dev/stderr"]
