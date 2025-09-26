@@ -1,6 +1,6 @@
 NAME=ghcr.io/uenob/msmtpd-msal
-VERSION=1.8.28
-SHA256=3a57f155f54e4860f7dd42138d9bea1af615b99dfab5ab4cd728fc8c09a647a4
+VERSION=1.8.31
+SHA256=c262b11762d8582a3c6d6ca8d8b2cca2b1605497324ca27cc57fdc145a27119f
 DOCKER=docker
 
 msmtpd-msal-$(VERSION).tar: \
