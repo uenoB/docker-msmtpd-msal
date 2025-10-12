@@ -17,7 +17,9 @@ COPY msal.tgz /root
 RUN mkdir msal && tar -xzf msal.tgz -C msal
 RUN cd msal && go build -tags=simple -trimpath -ldflags="-s -w"
 
-FROM gcr.io/distroless/cc-debian12:nonroot
+RUN apt-get install -y ca-certificates
+
+FROM debian:12-slim
 COPY --from=build \
   /lib/x86_64-linux-gnu/libssl.so.3 \
   /lib/x86_64-linux-gnu/libcrypto.so.3 \
@@ -29,6 +31,10 @@ COPY --from=build \
   /usr/bin/tini \
   /usr/bin
 VOLUME /etc/msmtp
+
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+USER 65532:65532
 
 ENTRYPOINT ["tini", "--", "msmtpd"]
 CMD ["--interface=0.0.0.0", "--port=2525", "--log=/dev/stderr"]
