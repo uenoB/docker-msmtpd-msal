@@ -1,13 +1,13 @@
 FROM debian:12 AS build
 RUN apt-get update
-RUN apt-get install -y libc6-dev gcc make pkg-config xz-utils libssl-dev
-RUN apt-get install -y golang ca-certificates
-RUN apt-get install -y tini
+RUN apt-get install -y libc6-dev gcc make pkg-config xz-utils libssl-dev golang
+RUN apt-get install -y ca-certificates patch tini
 WORKDIR /root
 
 ARG VERSION
-COPY msmtp-$VERSION.tar.xz /root
+COPY msmtp-$VERSION.tar.xz msmtpd.c.patch /root
 RUN xz -cd msmtp-$VERSION.tar.xz | tar -xf -
+RUN cd msmtp-$VERSION && patch -p1 < ../msmtpd.c.patch
 RUN cd msmtp-$VERSION && \
   ./configure --prefix=/usr --sysconfdir=/etc/msmtp \
               --disable-nls --with-tls=openssl && \

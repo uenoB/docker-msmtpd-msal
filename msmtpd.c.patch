@@ -1,0 +1,11 @@
+--- msmtp-1.8.31/src/msmtpd.c.orig	2025-08-10 22:52:18
++++ msmtp-1.8.31/src/msmtpd.c	2025-10-14 12:33:02
+@@ -55,7 +55,7 @@
+ /* Built-in defaults */
+ static const char* DEFAULT_INTERFACE = "127.0.0.1";
+ static const int DEFAULT_PORT = 25;
+-static const int MAX_ACTIVE_SESSIONS = 16;
++static const int MAX_ACTIVE_SESSIONS = 1;
+ static const int AUTH_DELAY_SECONDS = 1;
+ static const int AUTH_DELAY_EXPIRATION_SECONDS = 60;
+ static const char* DEFAULT_COMMAND = BINDIR "/msmtp -f %F --";
